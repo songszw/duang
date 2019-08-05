@@ -9,6 +9,7 @@ def get_image(url):
     else:
         print(response.status_code)
 
+
 def save_img(img, page):
     with open('container/'+str(page)+'.png', 'wb') as f:
         f.write(img)
@@ -25,4 +26,3 @@ def main(pages):
 if __name__ == '__main__':
     for i in range(218):
         main(i + 1)
-

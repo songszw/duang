@@ -1,23 +1,28 @@
-# import requests
-# import os
-# url="https://www.gujiguan.com/showpic.aspx?book=Avoo8GCdf1I=&page=1"
-# try:
-#     r=requests.get(url)
-#     with open('01.png','wb')as f:
-#         f.write(r.content)
-#         f.close()
-#         print("文件保存成功")
-#
-# except:
-#     print("爬取失败")
-
 import requests
 import time
+from requests.exceptions import ConnectionError
+
+proxy_pool_url = 'http://localhost:5000/get'
+
+
+def get_proxy():
+    try:
+        response = requests.get(proxy_pool_url)
+        if response.status_code == 200:
+            return response.text
+        return None
+    except ConnectionError:
+        return None
+
 
 def get_image(url):
-    response = requests.get(url)
+    proxies = {
+        'http': 'http://'+get_proxy()
+    }
+    response = requests.get(url, proxies=proxies)
     if response.status_code == 200:
         return response.content
+    print(response.status_code)
 
 
 def save_img(img,pages):
@@ -36,5 +41,4 @@ def main(pages):
 if __name__ == '__main__':
     for i in range(513):
         main(i+1)
-        time.sleep(1)
 
