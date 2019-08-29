@@ -29,6 +29,7 @@ def search():
 
     except TimeoutException as e:
         search()
+        print(e)
 
 
 def main():
